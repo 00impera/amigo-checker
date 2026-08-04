@@ -51,6 +51,7 @@
 <script type="py">
 import random
 from pyscript import document
+from pyodide.ffi import create_proxy
 
 def generate_amigo_draw():
     numbers = list(range(1, 29))
@@ -67,7 +68,7 @@ def amigo_run(event=None):
     document.getElementById("output").innerHTML = result
 
 run_btn = document.getElementById("run")
-run_btn.addEventListener("click", amigo_run)
+run_btn.addEventListener("click", create_proxy(amigo_run))
 run_btn.disabled = False
 run_btn.innerText = "Generează tiraj"
 document.getElementById("output").innerText = "Gata. Apasă butonul."
