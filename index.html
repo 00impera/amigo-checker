@@ -1,25 +1,48 @@
 <!DOCTYPE html>
-<html>
+<html lang="ro">
 <head>
+    <meta charset="UTF-8">
     <title>Amigo Draw</title>
-    <script defer src="https://pyscript.net/releases/2024.1.1/pyscript.js"></script>
+
+    <link rel="stylesheet" href="https://pyscript.net/releases/2024.1.1/core.css">
+    <script type="module" src="https://pyscript.net/releases/2024.1.1/core.js"></script>
+
     <style>
-        body { background-color: #000; color: #fff; font-family: Arial; padding: 20px; }
-        .blue { color: #0099ff; font-weight: bold; }
-        .yellow { color: #ffcc00; font-weight: bold; }
-        button { padding: 10px 20px; background: #0099ff; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; }
-        pre { font-size: 22px; }
+        body {
+            background-color: #000;
+            color: #fff;
+            font-family: Arial;
+            padding: 20px;
+        }
+        .blue {
+            color: #0099ff;
+            font-weight: bold;
+        }
+        .yellow {
+            color: #ffcc00;
+            font-weight: bold;
+        }
+        button {
+            padding: 10px 20px;
+            background: #0099ff;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        pre {
+            font-size: 22px;
+        }
     </style>
 </head>
 <body>
 <h2>Generator AMIGO</h2>
 <button id="run">Generează tiraj</button>
-<pre id="output"></pre>
+<pre id="output">Se încarcă motorul Python...</pre>
 
-<py-script>
+<script type="py">
 import random
-from pyscript import document, window
-from pyjs import to_js
+from pyscript import document
 
 def generate_amigo_draw():
     numbers = list(range(1, 29))
@@ -36,7 +59,8 @@ def amigo_run(event=None):
     document.getElementById("output").innerHTML = result
 
 document.getElementById("run").addEventListener("click", amigo_run)
-</py-script>
+document.getElementById("output").innerText = "Gata. Apasă butonul."
+</script>
 
 </body>
 </html>
