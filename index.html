@@ -1,67 +1,42 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Amigo Checker</title>
+    <title>Amigo Draw</title>
     <script defer src="https://pyscript.net/releases/2024.1.1/pyscript.js"></script>
 
     <style>
         body {
             background-color: #000;
             color: #fff;
-            font-family: Arial, sans-serif;
+            font-family: Arial;
             padding: 20px;
         }
-
-        h2 {
-            color: #00aaff;
-        }
-
-        input {
-            padding: 8px;
-            font-size: 16px;
-            width: 300px;
-            border-radius: 5px;
-            border: none;
-        }
-
-        button {
-            padding: 10px 20px;
-            font-size: 16px;
-            margin-top: 10px;
-            background-color: #00aaff;
-            color: #000;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        pre {
-            background-color: #111;
-            padding: 15px;
-            border-radius: 10px;
-            font-size: 18px;
-        }
-
-        .blue-number {
+        .blue {
             color: #0099ff;
             font-weight: bold;
         }
-
-        .yellow-number {
+        .yellow {
             color: #ffcc00;
             font-weight: bold;
+        }
+        button {
+            padding: 10px 20px;
+            background: #0099ff;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        pre {
+            font-size: 22px;
         }
     </style>
 </head>
 <body>
 
-<h2>Generator & Verificator AMIGO</h2>
+<h2>Generator AMIGO</h2>
 
-<p>Introdu numerele tale (7 numere între 1 și 28):</p>
-<input id="user_numbers" type="text" placeholder="ex: 3,7,12,14,18,22,27">
-
-<button id="run">Generează tiraj + verifică biletul</button>
+<button id="run">Generează tiraj</button>
 
 <pre id="output"></pre>
 
@@ -70,52 +45,26 @@ import random
 
 def generate_amigo_draw():
     numbers = list(range(1, 29))
-    blue = random.sample(numbers, 7)
+    blue = sorted(random.sample(numbers, 7))
     remaining = [n for n in numbers if n not in blue]
-    yellow = random.sample(remaining, 5)
-    return sorted(blue), sorted(yellow)
+    yellow = sorted(random.sample(remaining, 5))
+    return blue, yellow
 
-def check_ticket(user_nums, blue, yellow):
-    user_set = set(user_nums)
-    blue_hits = len(user_set & set(blue))
-    yellow_hits = len(user_set & set(yellow))
-    return blue_hits, yellow_hits
-
-def amigo_run(user_input):
-    try:
-        user_nums = [int(x) for x in user_input.split(",")]
-        if len(user_nums) != 7:
-            return "Trebuie EXACT 7 numere!"
-        if any(n < 1 or n > 28 for n in user_nums):
-            return "Numerele trebuie să fie între 1 și 28!"
-    except:
-        return "Format invalid. Exemplu: 3,7,12,14,18,22,27"
-
+def amigo_run():
     blue, yellow = generate_amigo_draw()
-    blue_hits, yellow_hits = check_ticket(user_nums, blue, yellow)
 
-    # HTML styling for colors
-    blue_html = " ".join([f"<span class='blue-number'>{n}</span>" for n in blue])
-    yellow_html = " ".join([f"<span class='yellow-number'>{n}</span>" for n in yellow])
+    blue_html = " ".join([f"<span class='blue'>{n}</span>" for n in blue])
+    yellow_html = " ".join([f"<span class='yellow'>{n}</span>" for n in yellow])
 
     return (
-        f"Tiraj AMIGO:\n"
-        f"Albastre (7): {blue_html}\n"
-        f"Galbene (5): {yellow_html}\n\n"
-        f"Rezultatul biletului tău:\n"
-        f"Numere albastre găsite: {blue_hits}\n"
-        f"Numere galbene găsite: {yellow_hits}\n"
+        f"Numere albastre (7): {blue_html}\n"
+        f"Numere galbene (5): {yellow_html}"
     )
 </py-script>
 
 <script>
 document.getElementById("run").onclick = async () => {
-    let user_input = document.getElementById("user_numbers").value;
-    let result = await pyscript.interpreter.run(`
-from js import user_input
-result = amigo_run(user_input)
-result
-    `);
+    let result = await pyscript.interpreter.run("amigo_run()");
     document.getElementById("output").innerHTML = result;
 };
 </script>
