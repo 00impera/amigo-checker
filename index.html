@@ -3,45 +3,23 @@
 <head>
     <title>Amigo Draw</title>
     <script defer src="https://pyscript.net/releases/2024.1.1/pyscript.js"></script>
-
     <style>
-        body {
-            background-color: #000;
-            color: #fff;
-            font-family: Arial;
-            padding: 20px;
-        }
-        .blue {
-            color: #0099ff;
-            font-weight: bold;
-        }
-        .yellow {
-            color: #ffcc00;
-            font-weight: bold;
-        }
-        button {
-            padding: 10px 20px;
-            background: #0099ff;
-            border: none;
-            border-radius: 5px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        pre {
-            font-size: 22px;
-        }
+        body { background-color: #000; color: #fff; font-family: Arial; padding: 20px; }
+        .blue { color: #0099ff; font-weight: bold; }
+        .yellow { color: #ffcc00; font-weight: bold; }
+        button { padding: 10px 20px; background: #0099ff; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; }
+        pre { font-size: 22px; }
     </style>
 </head>
 <body>
-
 <h2>Generator AMIGO</h2>
-
 <button id="run">Generează tiraj</button>
-
 <pre id="output"></pre>
 
 <py-script>
 import random
+from pyscript import document, window
+from pyjs import to_js
 
 def generate_amigo_draw():
     numbers = list(range(1, 29))
@@ -50,24 +28,15 @@ def generate_amigo_draw():
     yellow = sorted(random.sample(remaining, 5))
     return blue, yellow
 
-def amigo_run():
+def amigo_run(event=None):
     blue, yellow = generate_amigo_draw()
-
     blue_html = " ".join([f"<span class='blue'>{n}</span>" for n in blue])
     yellow_html = " ".join([f"<span class='yellow'>{n}</span>" for n in yellow])
+    result = f"Numere albastre (7): {blue_html}\nNumere galbene (5): {yellow_html}"
+    document.getElementById("output").innerHTML = result
 
-    return (
-        f"Numere albastre (7): {blue_html}\n"
-        f"Numere galbene (5): {yellow_html}"
-    )
+document.getElementById("run").addEventListener("click", amigo_run)
 </py-script>
-
-<script>
-document.getElementById("run").onclick = async () => {
-    let result = await pyscript.interpreter.run("amigo_run()");
-    document.getElementById("output").innerHTML = result;
-};
-</script>
 
 </body>
 </html>
