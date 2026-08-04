@@ -37,8 +37,16 @@
 </head>
 <body>
 <h2>Generator AMIGO</h2>
-<button id="run">Generează tiraj</button>
-<pre id="output">Se încarcă motorul Python...</pre>
+<button id="run" disabled>Se încarcă...</button>
+<pre id="output">Se încarcă motorul Python (poate dura 10-30 secunde la prima rulare)...</pre>
+
+<script>
+    // Diagnostic: dacă acest mesaj nu dispare in ~30s, interpretorul Python
+    // (Pyodide) nu a reusit sa porneasca -> problema de retea/extensie, nu de cod.
+    document.addEventListener("py:ready", () => {
+        console.log("Pyodide a pornit cu succes.");
+    });
+</script>
 
 <script type="py">
 import random
@@ -58,7 +66,10 @@ def amigo_run(event=None):
     result = f"Numere albastre (7): {blue_html}\nNumere galbene (5): {yellow_html}"
     document.getElementById("output").innerHTML = result
 
-document.getElementById("run").addEventListener("click", amigo_run)
+run_btn = document.getElementById("run")
+run_btn.addEventListener("click", amigo_run)
+run_btn.disabled = False
+run_btn.innerText = "Generează tiraj"
 document.getElementById("output").innerText = "Gata. Apasă butonul."
 </script>
 
